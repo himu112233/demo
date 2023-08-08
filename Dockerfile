@@ -1,14 +1,11 @@
-# Stage 1: Build the Angular app
-FROM node:14.17.0 AS build
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
+# Stage 1: Build Angular app
+FROM node:16-alpine as angular
+WORKDIR /app
 COPY . .
-RUN npm run build --prod
 
-# Stage 2: Serve the built Angular app using Nginx
-FROM nginx:1.21.1
-COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm install --force
+RUN npm run build
+
+# Stage 2: Serve the built Angular app using Apache HTTP Server
+FROM httpd:2.4-alpine
+COPY --from=angular /app/dist/Back-office /usr/local/apache2/htdocs/

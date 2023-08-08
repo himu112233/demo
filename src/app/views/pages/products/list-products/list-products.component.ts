@@ -35,7 +35,7 @@ export class ListProductsComponent implements OnInit {
   UserProduct: any
   AccessProduct !: AccessDTO[];
   productStatus = 'All Products';
-  PathImage = environment.logoPath ;
+  // PathImage = environment.logoPath ;
   showNoModulesMessage!: boolean;
   selectedProductModules: Module[] = [];
   products: Product[] = [];
